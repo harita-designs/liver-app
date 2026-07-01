@@ -35,9 +35,8 @@ export default function Login({ onLogin }) {
         initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: .45, ease: [.22,1,.36,1] }}
       >
-        <div className={styles.badge}>Clinician Portal</div>
-        <h1 className={styles.title}>
-          Liver<br/><span className={styles.ac}>Disease</span><br/>Prediction
+<h1 className={styles.title}>
+          <span style={{ color: '#fafafa' }}>Liver<br/>Disease</span><br/><span style={{ color: '#12B9DE' }}>Prediction</span>
         </h1>
         <p className={styles.sub}>Fast, clear, clinician-first diagnosis support.</p>
 

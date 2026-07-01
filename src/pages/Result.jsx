@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CalendarPlus, Bot, AlertTriangle, CheckCircle, Info } from 'lucide-react';
+import { CalendarPlus, Bot, AlertTriangle, CheckCircle, Info, X,
+         FlaskConical, Stethoscope, ScanLine, Pill, TrendingUp as TrendUp,
+         Heart, Calendar, ClipboardList } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Chatbot from '../components/Chatbot';
@@ -90,7 +92,7 @@ function GaugeChart({ score, color }) {
             fill: hex,
             letterSpacing: -2,
           }}>
-          {score}<tspan style={{ fontSize: 18, fontWeight: 400, opacity: .48, letterSpacing: 0 }}>%</tspan>
+          {score}<tspan dx="3" style={{ fontSize: 18, fontWeight: 400, opacity: .48, letterSpacing: 0 }}>%</tspan>
         </text>
         <text x="100" y="127" textAnchor="middle"
           style={{
@@ -123,34 +125,35 @@ function BarGroup({ label, val, unit, pct, danger, norm, delay }) {
   return (
     <div className={styles.barGroup}>
       <div className={styles.barGroupTop}>
-        <span className={styles.barGroupPctNum} style={{ color: hex }}>{pct}%</span>
-        <span className={styles.barGroupPctWord}>higher</span>
-        <span className={styles.barGroupPctSub}>than normal</span>
-      </div>
-
-      <div className={styles.barGroupChart}>
-        <div className={styles.bar}
-          style={{ height: normPx, background: '#12B9DE', minHeight: 52 }}>
-          <span className={styles.barLabel} style={{ color: 'rgba(255,255,255,.92)' }}>
-            {norm.hi}<br/><span className={styles.barUnit}>{unit}</span>
-          </span>
-        </div>
-
-        <div className={styles.bar}
-          style={{
-            height: patPx, minHeight: 52,
-            background: danger
-              ? 'linear-gradient(to top, rgba(229,62,62,.82), #e53e3e)'
-              : 'linear-gradient(to top, rgba(221,107,32,.82), #dd6b20)',
-            transition: 'height 1.1s cubic-bezier(.4,0,.2,1)',
-          }}>
-          <span className={styles.barLabel} style={{ color: 'rgba(255,255,255,.92)' }}>
-            {val}<br/><span className={styles.barUnit}>{unit}</span>
-          </span>
-        </div>
+        <span className={styles.barGroupPctNum} style={{ color: hex }}>↑ {pct}%</span>
+        <span className={styles.barGroupPctSub}>above reference range</span>
       </div>
 
       <span className={styles.barGroupFooter}>{label}</span>
+
+      <div className={styles.barGroupChart}>
+        <div className={styles.barCol}>
+          <span className={styles.barColLabel}>
+            {norm.hi}<br/><span className={styles.barUnit}>{unit}</span>
+          </span>
+          <div className={styles.bar}
+            style={{ height: normPx, background: '#12B9DE', minHeight: 52 }}/>
+        </div>
+
+        <div className={styles.barCol}>
+          <span className={styles.barColLabel}>
+            {val}<br/><span className={styles.barUnit}>{unit}</span>
+          </span>
+          <div className={styles.bar}
+            style={{
+              height: patPx, minHeight: 52,
+              background: danger
+                ? 'linear-gradient(to top, rgba(229,62,62,.82), #e53e3e)'
+                : 'linear-gradient(to top, rgba(221,107,32,.82), #dd6b20)',
+              transition: 'height 1.1s cubic-bezier(.4,0,.2,1)',
+            }}/>
+        </div>
+      </div>
     </div>
   );
 }
@@ -202,27 +205,35 @@ function getNextSteps(score) {
   ];
 }
 
+function stepIcon(text) {
+  const t = text.toLowerCase();
+  if (/function test|liver test|liver panel/.test(t))        return <FlaskConical size={15}/>;
+  if (/hepatology|gastroenterology|consultation|referral/.test(t)) return <Stethoscope size={15}/>;
+  if (/ultrasound|ct|imaging/.test(t))                       return <ScanLine size={15}/>;
+  if (/medication|hepatotoxic/.test(t))                      return <Pill size={15}/>;
+  if (/monitor|bilirubin|transaminase|enzyme/.test(t))       return <TrendUp size={15}/>;
+  if (/lifestyle|diet|exercise|alcohol/.test(t))             return <Heart size={15}/>;
+  if (/follow.?up|annual|schedule/.test(t))                  return <Calendar size={15}/>;
+  if (/evaluat|metabolic/.test(t))                           return <ClipboardList size={15}/>;
+  return <FlaskConical size={15}/>;
+}
+
 function genderLabel(g) {
   if (g === 'M' || g === 'Male')   return 'Male';
   if (g === 'F' || g === 'Female') return 'Female';
   return g || '';
 }
 
-// Compact labels for the KPI strip
-const SHORT_LABEL = {
-  alt: 'ALT', ast: 'AST', tb: 'Bilirubin', db: 'Dir. Bili.',
-  alkp: 'ALP', tp: 'Protein', alb: 'Albumin',
-};
-
 // ── MAIN COMPONENT ─────────────────────────────────────────────
 export default function Result({ email, patient, result, onLogout }) {
   const heroRef    = useRef(null);
   const [chatOpen, setChatOpen] = useState(false);
   const [chatMode, setChatMode] = useState('chat'); // 'chat' | 'report'
-  const [apptOpen,    setApptOpen]    = useState(false);
-  const [bookings,    setBookings]    = useState([]);
-  const [changingIdx, setChangingIdx] = useState(null);
-  const [prevApptCount, setPrevApptCount] = useState(0);
+  const [apptOpen,       setApptOpen]       = useState(false);
+  const [bookings,       setBookings]       = useState([]);
+  const [changingIdx,    setChangingIdx]    = useState(null);
+  const [prevApptCount,  setPrevApptCount]  = useState(0);
+  const [cancelTargetIdx, setCancelTargetIdx] = useState(null);
 
   useEffect(() => {
     if (patient?.id) {
@@ -246,6 +257,15 @@ export default function Result({ email, patient, result, onLogout }) {
   const gender    = genderLabel(patient.g);
   const nextSteps = getNextSteps(score);
   const reportRows = chatMode === 'report' ? buildReport(patient, result.markers) : null;
+
+  function handleCancelBooking(idx) {
+    if (bookings.length === 1 && patient?.id) {
+      const key = `apptCount_${patient.id}`;
+      const current = parseInt(localStorage.getItem(key) || '0', 10);
+      if (current > 0) localStorage.setItem(key, String(current - 1));
+    }
+    setBookings(prev => prev.filter((_, i) => i !== idx));
+  }
 
   function handleApptConfirm(bookingData) {
     if (changingIdx !== null) {
@@ -289,15 +309,6 @@ export default function Result({ email, patient, result, onLogout }) {
             </p>
           </motion.div>
 
-          {/* RIGHT — live chip only */}
-          <motion.div className={styles.heroRiskRight}
-            initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: .5, delay: .2, ease: [.22,1,.36,1] }}>
-            <div className={styles.liveChip}>
-              <span className={styles.liveDot}/>
-              Live Analysis
-            </div>
-          </motion.div>
         </div>
       </header>
 
@@ -306,109 +317,83 @@ export default function Result({ email, patient, result, onLogout }) {
         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
         transition={{ duration: .45, delay: .26, ease: [.22,1,.36,1] }}>
 
-        {/* ── Risk Assessment Card ── */}
+        {/* ── Risk Score Card ── */}
         <div className={styles.riskCard} style={{ '--risk-c': hex }}>
-
-          {/* ── Zone 1 · Header ── */}
           <div className={styles.riskCardHead}>
             <span className={styles.cardEyebrow}>Risk Assessment</span>
-            <span className={styles.riskPill}
-              style={{ color: hex, background: `${hex}12`, borderColor: `${hex}2e` }}>
-              <span className={styles.riskPillDot} style={{ background: hex }}/>
-              {level}
-            </span>
           </div>
-
-          {/* ── Zone 2 · Gauge + Summary ── */}
           <div className={styles.riskInner}>
             <GaugeChart score={score} color={color}/>
             <div className={styles.riskSummary}>
               <span className={styles.riskLevel} style={{ color: hex }}>{level}</span>
-
-              {/* KPI strip — markers at a glance */}
-              {topMarkers.length > 0 && (
-                <div className={styles.riskKpi}>
-                  <div className={styles.riskKpiItem}>
-                    <span className={styles.riskKpiVal} style={{ color: hex }}>
-                      {topMarkers.length}
-                    </span>
-                    <span className={styles.riskKpiLabel}>
-                      value{topMarkers.length !== 1 ? 's' : ''} outside range
-                    </span>
-                  </div>
-                  <span className={styles.riskKpiSep}/>
-                  <div className={styles.riskKpiItem}>
-                    <span className={styles.riskKpiVal}>
-                      {SHORT_LABEL[topMarkers[0]?.key] ?? topMarkers[0]?.label}
-                    </span>
-                    <span className={styles.riskKpiLabel}>most elevated</span>
-                  </div>
-                </div>
-              )}
-
               <p className={styles.riskDesc}>{clinicalSummary(score, topMarkers)}</p>
+              {topMarkers.length > 0 && (
+                <p className={styles.riskContrib}>
+                  Top contributing biomarkers: {topMarkers.map(m => m.label).join(', ')}
+                </p>
+              )}
+              <div className={styles.actions}>
+                {color !== 'var(--ok)' && (
+                  <AnimatePresence mode="wait" initial={false}>
+                    {bookings.length === 0 ? (
+                      <motion.button key="book"
+                        className={styles.btnBook}
+                        onClick={() => { setChangingIdx(null); setApptOpen(true); }}
+                        whileTap={{ scale: .97 }}
+                        exit={{ opacity: 0, scale: .94, transition: { duration: .15 } }}>
+                        <CalendarPlus size={15}/> Book Appointment
+                      </motion.button>
+                    ) : (
+                      <motion.div key="booked-group"
+                        className={styles.bookedGroup}
+                        initial={{ opacity: 0, scale: .95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: .95 }}
+                        transition={{ duration: .22, ease: [.22,1,.36,1] }}>
+                        {bookings.map((b, i) => (
+                          <div key={i} className={styles.btnBooked}>
+                            <CheckCircle size={15} className={styles.btnBookedCheck}/>
+                            <div className={styles.btnBookedAvatar}
+                              style={{ background: b.doctor.accentColor }}>
+                              {b.doctor.initials}
+                            </div>
+                            <div className={styles.btnBookedInfo}>
+                              <p className={styles.btnBookedName}>{b.doctor.name}</p>
+                              <p className={styles.btnBookedMeta}>
+                                {b.shortDate} · {b.time}
+                                {i === 0 && prevApptCount === 0
+                                  ? <span className={styles.btnBookedFirst}> · First visit</span>
+                                  : i === 0
+                                  ? <span> · {prevApptCount} previous {prevApptCount === 1 ? 'visit' : 'visits'}</span>
+                                  : null}
+                              </p>
+                            </div>
+                            <button className={styles.btnBookedChange}
+                              onClick={() => { setChangingIdx(i); setApptOpen(true); }}>
+                              Change
+                            </button>
+                            <button className={styles.btnBookedCancel}
+                              onClick={() => setCancelTargetIdx(i)}
+                              title="Cancel appointment">
+                              <X size={12}/>
+                            </button>
+                          </div>
+                        ))}
+                        <button className={styles.btnAddAppt}
+                          onClick={() => { setChangingIdx(null); setApptOpen(true); }}>
+                          <CalendarPlus size={13}/> Add appointment
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                )}
+                <motion.button className={styles.btnReport}
+                  onClick={openReport} whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }}>
+                  <Bot size={15}/> View Report
+                </motion.button>
+              </div>
             </div>
           </div>
-
-          {/* ── Zone 3 · Actions ── */}
-          <div className={styles.riskActions}>
-            {color !== 'var(--ok)' && (
-              <AnimatePresence mode="wait" initial={false}>
-                {bookings.length === 0 ? (
-                  <motion.button key="book"
-                    className={styles.btnBook}
-                    onClick={() => { setChangingIdx(null); setApptOpen(true); }}
-                    whileTap={{ scale: .97 }}
-                    exit={{ opacity: 0, scale: .94, transition: { duration: .15 } }}>
-                    <CalendarPlus size={15}/> Book Appointment
-                  </motion.button>
-                ) : (
-                  <motion.div key="booked-group"
-                    className={styles.bookedGroup}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 6 }}
-                    transition={{ duration: .22, ease: [.22,1,.36,1] }}>
-                    {bookings.map((b, i) => (
-                      <div key={i} className={styles.btnBooked}>
-                        <CheckCircle size={14} className={styles.btnBookedCheck}/>
-                        <div className={styles.btnBookedAvatar}
-                          style={{ background: b.doctor.accentColor }}>
-                          {b.doctor.initials}
-                        </div>
-                        <div className={styles.btnBookedInfo}>
-                          <p className={styles.btnBookedName}>{b.doctor.name}</p>
-                          <p className={styles.btnBookedMeta}>
-                            {b.shortDate} · {b.time} · {b.mode}
-                            {i === 0 && prevApptCount === 0
-                              ? <span className={styles.btnBookedFirst}> · First visit</span>
-                              : i === 0
-                              ? <span> · {prevApptCount} previous {prevApptCount === 1 ? 'visit' : 'visits'}</span>
-                              : null}
-                          </p>
-                        </div>
-                        <button className={styles.btnBookedChange}
-                          onClick={() => { setChangingIdx(i); setApptOpen(true); }}>
-                          Change
-                        </button>
-                      </div>
-                    ))}
-                    <button className={styles.btnAddAppt}
-                      onClick={() => { setChangingIdx(null); setApptOpen(true); }}>
-                      <CalendarPlus size={13}/> Add appointment
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            )}
-            <motion.button className={styles.btnReport}
-              style={bookings.length > 0 ? { marginLeft: 'auto' } : undefined}
-              onClick={openReport} whileHover={{ scale: 1.03 }} whileTap={{ scale: .97 }}>
-              <Bot size={15}/> Full Report
-            </motion.button>
-          </div>
-
-          {/* ── Zone 4 · Disclaimer footer ── */}
           <div className={styles.riskFooter}>
             <Info size={12}/>
             This prediction is based on statistical patterns in historical liver test data. Please consider clinical context before taking action.
@@ -421,6 +406,17 @@ export default function Result({ email, patient, result, onLogout }) {
             initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: .4, delay: .35, ease: [.22,1,.36,1] }}>
             <p className={styles.cardEyebrow}>Highlighted Abnormal Values</p>
+
+            <div className={styles.barLegend}>
+              <span className={styles.barLegendItem}>
+                <span className={styles.barLegendSwatch} style={{ background: '#12B9DE' }}/>
+                Normal Range
+              </span>
+              <span className={styles.barLegendItem}>
+                <span className={styles.barLegendSwatch} style={{ background: 'linear-gradient(135deg,#dd6b20,#e53e3e)' }}/>
+                Patient Result
+              </span>
+            </div>
 
             <div className={styles.barGroups}>
               {topMarkers.map(({ key: mKey, ...mProps }, i) => (
@@ -436,16 +432,18 @@ export default function Result({ email, patient, result, onLogout }) {
 
             <ul className={styles.findingsList}>
               {result.markers.slice(0, 4).map(m => {
-                const [bold, desc] = FINDINGS[m.key] || [`Elevated ${m.label}`, 'Requires further clinical evaluation.'];
-                const mHex = m.danger ? '#e53e3e' : '#dd6b20';
+                const [, desc] = FINDINGS[m.key] || ['', 'Requires further clinical evaluation.'];
+                const mHex   = m.danger ? '#e53e3e' : '#dd6b20';
+                const status = m.dir === 'low' ? '▼ Low' : '▲ Elevated';
                 return (
                   <li key={m.key} className={styles.finding}>
                     <span className={styles.findingAccent} style={{ background: mHex }}/>
-                    <div>
-                      <div className={styles.findingHead}>
-                        <strong className={styles.findingBold}>{bold}</strong>
-                        <span className={styles.findingPct} style={{ color: mHex }}>
-                          {m.pct}% above normal
+                    <div className={styles.findingBody}>
+                      <div className={styles.findingMeta}>
+                        <strong className={styles.findingName}>{m.label}</strong>
+                        <span className={styles.findingTag}
+                          style={{ color: mHex, background: `${mHex}12`, borderColor: `${mHex}28` }}>
+                          {status}
                         </span>
                       </div>
                       <p className={styles.findingDesc}>{desc}</p>
@@ -463,7 +461,7 @@ export default function Result({ email, patient, result, onLogout }) {
           transition={{ duration: .4, delay: .45, ease: [.22,1,.36,1] }}>
           <div className={styles.stepsHead}>
             <p className={styles.cardEyebrow}>Recommended Next Steps</p>
-            <span className={styles.stepsCount}>{nextSteps.length} actions</span>
+            <span className={styles.stepsCount}>Recommended Actions</span>
           </div>
           <div className={styles.stepsList}>
             {nextSteps.map((step, i) => (
@@ -472,7 +470,7 @@ export default function Result({ email, patient, result, onLogout }) {
                 transition={{ duration: .3, delay: .52 + i * .07, ease: [.22,1,.36,1] }}>
                 <div className={styles.stepNum}
                   style={{ background: i === 0 ? hex : '#00115D' }}>
-                  {i + 1}
+                  {stepIcon(step)}
                 </div>
                 <div className={styles.stepBody}>
                   {i === 0 && color !== 'var(--ok)' && (
@@ -501,6 +499,44 @@ export default function Result({ email, patient, result, onLogout }) {
         reportRows={reportRows}
       />
       <ApptModal open={apptOpen} onClose={() => setApptOpen(false)} onConfirm={handleApptConfirm}/>
+
+      {/* ── Cancel appointment confirmation ── */}
+      <AnimatePresence>
+        {cancelTargetIdx !== null && (() => {
+          const b = bookings[cancelTargetIdx];
+          return b ? (
+            <motion.div className={styles.cancelBackdrop}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: .2 }}
+              onClick={() => setCancelTargetIdx(null)}>
+              <motion.div className={styles.cancelModal}
+                initial={{ opacity: 0, scale: .94, y: 14 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: .94, y: 14 }}
+                transition={{ type: 'spring', damping: 26, stiffness: 320 }}
+                onClick={e => e.stopPropagation()}>
+                <div className={styles.cancelIconWrap}>
+                  <X size={20}/>
+                </div>
+                <h3 className={styles.cancelTitle}>Cancel Appointment?</h3>
+                <p className={styles.cancelDesc}>
+                  Your appointment with <strong>{b.doctor.name}</strong> on {b.shortDate} at {b.time} will be removed.
+                </p>
+                <div className={styles.cancelModalActions}>
+                  <button className={styles.cancelKeep}
+                    onClick={() => setCancelTargetIdx(null)}>
+                    Keep Appointment
+                  </button>
+                  <button className={styles.cancelConfirm}
+                    onClick={() => { handleCancelBooking(cancelTargetIdx); setCancelTargetIdx(null); }}>
+                    Yes, Cancel
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
+          ) : null;
+        })()}
+      </AnimatePresence>
     </div>
   );
 }

@@ -191,82 +191,47 @@
   margin-bottom: 1.375rem;
 }
 
-/* ── RISK ASSESSMENT CARD ─────────────────────────────────────── */
+/* ── RISK SCORE CARD ──────────────────────────────────────────── */
 .riskCard {
   background: #fff;
   border: 1px solid var(--p10);
   border-radius: var(--r-xl);
-  box-shadow: 0 2px 8px rgba(20,33,61,.07);
+  box-shadow: 0 1px 4px rgba(20,33,61,.06);
   position: relative;
   overflow: hidden;
 }
 
-/* Left accent bar — carries risk colour at a glance */
-.riskCard::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; bottom: 0;
-  width: 4px;
-  background: var(--risk-c);
-  z-index: 1;
-}
-
-/* Top-right ambient glow */
+/* Subtle top-right glow matching risk colour */
 .riskCard::after {
   content: '';
   position: absolute;
-  top: -80px; right: -80px;
-  width: 320px; height: 320px;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--risk-c, transparent) 0%, transparent 68%);
-  opacity: .08;
+  background: radial-gradient(circle, var(--risk-c, transparent) 0%, transparent 70%);
+  opacity: .06;
   pointer-events: none;
 }
 
-/* ── Zone 1: Header ─────────────────────────────────────────── */
 .riskCardHead {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.375rem 2.25rem 1.25rem 2.5rem;
-  border-bottom: 1px solid var(--p10);
+  padding: 1.625rem 2.25rem 0;
 }
 
 .riskCardHead .cardEyebrow { margin-bottom: 0; }
 
-.riskPill {
-  display: inline-flex;
-  align-items: center;
-  gap: .38rem;
-  padding: .32rem .8rem;
-  border-radius: 99px;
-  border: 1px solid;
-  font-family: var(--fm);
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .1px;
-  flex-shrink: 0;
-}
-
-.riskPillDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  animation: livePulse 2.4s ease-in-out infinite;
-}
-
-/* ── Zone 2: Body grid ──────────────────────────────────────── */
 .riskInner {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 2rem;
+  grid-template-columns: 200px 1fr;
+  gap: 0.375rem;
   align-items: center;
-  padding: 1.5rem 2.25rem 1.5rem 2.5rem;
+  padding: 1.25rem 2.25rem 1.75rem;
 }
 
 /* ── GAUGE ───────────────────────────────────────────────────── */
-.gaugeWrap { width: 240px; }
+.gaugeWrap { width: 200px; }
 
 .gaugeSvg {
   width: 100%;
@@ -278,78 +243,41 @@
 .riskSummary {
   display: flex;
   flex-direction: column;
+  gap: 0;
 }
 
 .riskLevel {
   display: block;
   font-family: var(--fd);
   font-weight: 800;
-  font-size: clamp(1.75rem, 3vw, 2.375rem);
-  letter-spacing: -.7px;
-  line-height: 1.06;
+  font-size: clamp(1.625rem, 2.8vw, 2.125rem);
+  letter-spacing: -.5px;
+  line-height: 1.1;
   margin-bottom: .75rem;
-}
-
-/* KPI strip — quick-read markers data */
-.riskKpi {
-  display: inline-flex;
-  align-items: center;
-  gap: .875rem;
-  padding: .55rem .875rem;
-  background: var(--bg);
-  border: 1px solid var(--p10);
-  border-radius: 10px;
-  margin-bottom: .875rem;
-  align-self: flex-start;
-}
-
-.riskKpiItem {
-  display: flex;
-  flex-direction: column;
-  gap: .1rem;
-}
-
-.riskKpiVal {
-  font-family: var(--fd);
-  font-weight: 800;
-  font-size: 1rem;
-  color: var(--p);
-  line-height: 1;
-  letter-spacing: -.2px;
-}
-
-.riskKpiLabel {
-  font-family: var(--fm);
-  font-size: .58rem;
-  font-weight: 600;
-  color: var(--p50);
-  letter-spacing: .15px;
-  white-space: nowrap;
-}
-
-.riskKpiSep {
-  width: 1px;
-  height: 22px;
-  background: var(--p10);
-  flex-shrink: 0;
 }
 
 .riskDesc {
   font-family: var(--fb);
-  font-size: .9rem;
-  line-height: 1.68;
+  font-size: .9375rem;
+  line-height: 1.65;
   color: var(--p);
-  margin: 0;
+  margin-bottom: .625rem;
 }
 
-/* ── Zone 3: Actions ────────────────────────────────────────── */
-.riskActions {
+.riskContrib {
+  font-family: var(--fm);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--p50);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.actions {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: .875rem;
   flex-wrap: wrap;
-  padding: 1rem 2.25rem 1rem 2.5rem;
-  border-top: 1px solid var(--p10);
 }
 
 /* Disclaimer footer zone */
@@ -357,7 +285,7 @@
   display: flex;
   align-items: flex-start;
   gap: .5rem;
-  padding: .75rem 2.25rem .75rem 2.5rem;
+  padding: .875rem 2.25rem;
   border-top: 1px solid var(--p10);
   background: var(--bg);
   font-family: var(--fb);
@@ -416,7 +344,7 @@
 .barGroups {
   display: flex;
   gap: 0;
-  padding: 1.5rem 1.5rem .25rem;
+  padding: 1.5rem 1.5rem 1.5rem;
   background: var(--bg);
   border: 1px solid var(--p10);
   border-radius: var(--r-xl);
@@ -427,7 +355,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 1.75rem 1.25rem;
+  align-items: flex-start;
+  padding: 0 1.75rem 0;
   border-right: 1px solid var(--p10);
   min-width: 140px;
 }
@@ -438,61 +367,62 @@
 .barGroupTop {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
+  align-items: flex-start;
+  text-align: left;
+  margin-bottom: .375rem;
 }
 
 .barGroupPctNum {
   font-family: var(--fd);
   font-weight: 900;
-  font-size: 1.875rem;
-  letter-spacing: 0;
+  font-size: 1.75rem;
+  letter-spacing: -.5px;
   line-height: 1;
-}
-
-.barGroupPctWord {
-  font-family: var(--fd);
-  font-weight: 700;
-  font-size: .9375rem;
-  color: var(--p);
-  margin-top: .1rem;
-  line-height: 1.2;
 }
 
 .barGroupPctSub {
   font-family: var(--fb);
   font-size: .75rem;
   color: var(--p50);
-  margin-top: .1rem;
+  margin-top: .25rem;
 }
 
-/* ── Chart area: bars floating from bottom, centred horizontally ── */
+/* ── Chart area: bars centered horizontally ── */
 .barGroupChart {
   display: flex;
-  gap: .625rem;
+  gap: .875rem;
   align-items: flex-end;
   justify-content: center;
+  flex: 1;
   height: 220px;
+  width: 100%;
 }
 
-/* Each bar: no track, just the bar div itself */
-.bar {
-  width: 64px;
-  border-radius: 12px 12px 6px 6px;
-  position: relative;
-  flex-shrink: 0;
+/* Each bar column: label above, bar below, anchored to bottom */
+.barCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: .375rem;
 }
 
-/* Value label overlaid inside bar at the bottom */
-.barLabel {
-  position: absolute;
-  bottom: 10px;
-  left: 0; right: 0;
-  text-align: center;
+.barColLabel {
   font-family: var(--fm);
   font-size: .68rem;
   font-weight: 700;
   color: rgba(20,33,61,.62);
+  text-align: center;
   line-height: 1.35;
+  flex-shrink: 0;
+}
+
+/* Each bar: solid block, no internal label */
+.bar {
+  width: 64px;
+  border-radius: 12px 12px 6px 6px;
+  flex-shrink: 0;
 }
 
 .barUnit {
@@ -500,18 +430,40 @@
   font-weight: 500;
 }
 
-/* ── Footer: biomarker name below bars ── */
+/* ── Biomarker name label — sits between stats and chart ── */
 .barGroupFooter {
   font-family: var(--fd);
   font-weight: 700;
   font-size: .78rem;
-  color: var(--p50);
-  text-align: center;
-  margin-top: .875rem;
-  padding-top: .625rem;
-  border-top: 1px solid var(--p10);
+  color: var(--p);
+  text-align: left;
+  margin-bottom: 1.125rem;
   display: block;
   letter-spacing: .1px;
+}
+
+/* ── BAR CHART LEGEND ─────────────────────────────────────────── */
+.barLegend {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 1.125rem;
+}
+
+.barLegendItem {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--fm);
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--p50);
+}
+
+.barLegendSwatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
 }
 
 /* ── FINDINGS SEPARATOR ───────────────────────────────────────── */
@@ -525,7 +477,7 @@
 .findingsList {
   display: flex;
   flex-direction: column;
-  gap: .875rem;
+  gap: 1.125rem;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -543,29 +495,52 @@
   align-self: stretch;
   border-radius: 99px;
   margin-top: .18rem;
-  min-height: 2.5rem;
+  min-height: 3rem;
 }
 
-.findingHead {
+.findingBody {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  gap: .2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.findingMeta {
+  display: flex;
+  align-items: center;
   gap: .625rem;
   flex-wrap: wrap;
-  margin-bottom: .25rem;
+  margin-bottom: .1rem;
 }
 
-.findingBold {
+.findingName {
   font-family: var(--fd);
-  font-weight: 700;
-  font-size: .875rem;
+  font-weight: 800;
+  font-size: 1rem;
   color: var(--p);
+  letter-spacing: -.1px;
+}
+
+.findingTag {
+  display: inline-flex;
+  align-items: center;
+  padding: .18rem .55rem;
+  border-radius: 99px;
+  border: 1px solid;
+  font-family: var(--fm);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .1px;
+  flex-shrink: 0;
 }
 
 .findingPct {
   font-family: var(--fm);
   font-weight: 700;
-  font-size: .72rem;
-  letter-spacing: .8px;
+  font-size: .75rem;
+  letter-spacing: .3px;
+  margin-bottom: .2rem;
 }
 
 .findingDesc {
@@ -641,17 +616,14 @@
 }
 
 .stepNum {
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 9px;
   background: #00115D;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--fd);
-  font-weight: 800;
-  font-size: .65rem;
   color: #fff;
   flex-shrink: 0;
   margin-top: .1rem;
@@ -693,17 +665,14 @@
   min-width: 0;
 }
 
-/* Each booked chip — green left accent signals confirmed status */
 .btnBooked {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: .75rem;
-  padding: .625rem 1rem .625rem .875rem;
+  gap: .625rem;
+  padding: .5rem .75rem .5rem .625rem;
   border-radius: 12px;
   border: 1.5px solid var(--p10);
-  border-left: 3px solid #2f855a;
-  background: #fff;
-  min-width: 260px;
+  background: var(--bg);
 }
 
 .btnBookedCheck {
@@ -712,15 +681,15 @@
 }
 
 .btnBookedAvatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--fd);
   font-weight: 800;
-  font-size: .72rem;
+  font-size: .7rem;
   color: #fff;
   flex-shrink: 0;
 }
@@ -733,7 +702,7 @@
 .btnBookedName {
   font-family: var(--fd);
   font-weight: 700;
-  font-size: .875rem;
+  font-size: .8125rem;
   color: var(--p);
   white-space: nowrap;
   overflow: hidden;
@@ -743,12 +712,12 @@
 
 .btnBookedMeta {
   font-family: var(--fm);
-  font-size: .7rem;
+  font-size: .68rem;
   color: var(--p50);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: .12rem;
+  margin-top: .1rem;
 }
 
 .btnBookedFirst { color: #276749; font-weight: 600; }
@@ -769,6 +738,26 @@
 .btnBookedChange:hover {
   border-color: rgba(0,17,93,.22);
   color: var(--p);
+}
+
+.btnBookedCancel {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--p10);
+  background: transparent;
+  color: var(--p50);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.btnBookedCancel:hover {
+  background: rgba(229,62,62,.06);
+  border-color: rgba(229,62,62,.3);
+  color: #e53e3e;
 }
 
 .btnAddAppt {
@@ -792,6 +781,109 @@
   background: rgba(0,17,93,.04);
 }
 
+/* ── CANCEL CONFIRMATION MODAL ───────────────────────────────── */
+.cancelBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,12,28,.52);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.cancelModal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  width: min(400px, 100%);
+  box-shadow:
+    0 24px 80px rgba(5,12,28,.32),
+    0 4px 20px rgba(5,12,28,.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+
+.cancelIconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(229,62,62,.08);
+  border: 1.5px solid rgba(229,62,62,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e53e3e;
+  margin-bottom: 1.125rem;
+}
+
+.cancelTitle {
+  font-family: var(--fd);
+  font-weight: 800;
+  font-size: 1.125rem;
+  color: var(--p);
+  letter-spacing: -.2px;
+  margin: 0 0 .625rem;
+}
+
+.cancelDesc {
+  font-family: var(--fb);
+  font-size: .9rem;
+  line-height: 1.6;
+  color: var(--p50);
+  margin: 0 0 1.75rem;
+}
+.cancelDesc strong { color: var(--p); font-family: var(--fd); font-weight: 700; }
+
+.cancelModalActions {
+  display: flex;
+  gap: .75rem;
+  width: 100%;
+}
+
+.cancelKeep {
+  flex: 1;
+  padding: .75rem 1rem;
+  border-radius: 99px;
+  border: 1.5px solid var(--p10);
+  background: var(--bg);
+  font-family: var(--fd);
+  font-weight: 700;
+  font-size: .9rem;
+  color: var(--p);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.cancelKeep:hover {
+  border-color: rgba(0,17,93,.22);
+  background: rgba(0,17,93,.03);
+}
+
+.cancelConfirm {
+  flex: 1;
+  padding: .75rem 1rem;
+  border-radius: 99px;
+  border: none;
+  background: #e53e3e;
+  font-family: var(--fd);
+  font-weight: 700;
+  font-size: .9rem;
+  color: #fff;
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s;
+  box-shadow: 0 2px 10px rgba(229,62,62,.3);
+}
+.cancelConfirm:hover {
+  background: #c53030;
+  box-shadow: 0 4px 18px rgba(229,62,62,.44);
+}
+
 /* ── RESPONSIVE ───────────────────────────────────────────────── */
 @media (max-width: 900px) {
   .heroInner {
@@ -803,23 +895,22 @@
   .riskInner {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    padding: 1.25rem 1.5rem 1.25rem 1.75rem;
+    padding: 1.25rem 1.5rem 1.375rem;
   }
-  .gaugeWrap { width: 220px; margin: 0 auto; }
+  .gaugeWrap { width: 200px; margin: 0 auto; }
   .content { padding: 1.5rem 5% 4rem; }
   .card { padding: 1.5rem; }
-  .riskCardHead { padding: 1.125rem 1.5rem 1rem 1.75rem; }
-  .riskActions { padding: .875rem 1.5rem .875rem 1.75rem; }
-  .riskFooter { padding: .75rem 1.5rem .75rem 1.75rem; }
+  .riskCardHead { padding: 1.25rem 1.5rem 0; }
+  .riskFooter { padding: .75rem 1.5rem; }
 }
 
 @media (max-width: 580px) {
   .heroName { font-size: 1.75rem; }
-  .riskActions {
+  .actions {
     flex-direction: column;
     align-items: flex-start;
   }
-  .btnBooked { min-width: 0; width: 100%; }
+  .btnBooked { width: 100%; }
   .btnBook, .btnReport {
     width: 100%;
     justify-content: center;
