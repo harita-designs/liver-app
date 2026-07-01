@@ -1,0 +1,329 @@
+/* ── PAGE ──────────────────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+}
+
+/* ── DARK HERO HEADER ──────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: 96px 6% 2rem;
+}
+
+.heroBg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 90% 10%, rgba(0,47,255,.18) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 50% at 5% 90%,  rgba(0,17,93,.6)   0%, transparent 60%),
+    linear-gradient(160deg, #0c1420 0%, #14213d 55%, #0d1829 100%);
+}
+
+
+.heroContent {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: row; align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0;
+}
+
+/* ── TITLE ─────────────────────────────────────────────────── */
+.title {
+  font-family: var(--fd); font-weight: 800;
+  font-size: clamp(1.375rem, 2.6vw, 1.875rem);
+  line-height: 1; letter-spacing: -.75px; color: #fafafa;
+}
+
+.ac { color: #00d4e8; }
+
+/* ── STAT ROW ──────────────────────────────────────────────── */
+.statRow {
+  display: flex; align-items: center; gap: 0;
+}
+
+.statItem {
+  display: flex; align-items: center; gap: .35rem;
+  padding: 0 1.125rem;
+}
+.statItem:first-child { padding-left: 0; }
+
+.statSep {
+  display: block;
+  width: 1px; height: .875rem;
+  background: rgba(255,255,255,.14);
+  flex-shrink: 0;
+}
+
+.statDot {
+  width: 6px; height: 6px; min-width: 6px;
+  border-radius: 50%;
+}
+
+.statNum {
+  font-family: var(--fd); font-weight: 700;
+  font-size: .9375rem; line-height: 1; letter-spacing: -.3px;
+  color: #fff;
+}
+
+.statLbl {
+  font-family: var(--fm); font-size: .8125rem; font-weight: 400;
+  color: rgba(255,255,255,.42);
+}
+
+/* ── TOOLBAR ───────────────────────────────────────────────── */
+.toolbar {
+  display: flex; gap: 1rem; align-items: center;
+  background: #fff;
+  border-bottom: 1px solid var(--p10);
+  box-shadow: 0 2px 12px rgba(20,33,61,.06);
+  padding: .875rem 6%;
+}
+
+.searchWrap {
+  flex: 1; position: relative; display: flex; align-items: center;
+}
+
+.searchIcon {
+  position: absolute; left: 1.1rem;
+  color: var(--p50); pointer-events: none;
+}
+
+.searchInput {
+  width: 100%; height: 42px;
+  padding: 0 3rem;
+  background: var(--bg);
+  border: 1.5px solid var(--p20);
+  border-radius: var(--r-xl);
+  font-family: var(--fb); font-size: .9375rem;
+  color: var(--p); outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.searchInput::placeholder { color: var(--p50); }
+.searchInput:focus {
+  border-color: #00115D;
+  box-shadow: 0 0 0 3px rgba(0,17,93,.1);
+}
+
+.clearBtn {
+  position: absolute; right: 1rem;
+  background: none; border: none; cursor: pointer;
+  color: var(--p50);
+  font-size: 1.25rem; line-height: 1;
+  transition: color .2s;
+}
+.clearBtn:hover { color: var(--p); }
+
+/* ── FILTER ────────────────────────────────────────────────── */
+.filterWrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.filterBtn {
+  display: inline-flex; align-items: center; gap: .4rem;
+  height: 42px; padding: 0 1rem;
+  border: 1.5px solid var(--p10);
+  border-radius: 99px; cursor: pointer;
+  font-family: var(--fm); font-weight: 600;
+  font-size: .75rem; color: var(--p50);
+  background: var(--bg);
+  transition: border-color .16s, color .16s, background .16s;
+  white-space: nowrap;
+}
+.filterBtn:hover:not(.filterActive) {
+  border-color: rgba(20,33,61,.25);
+  color: var(--p);
+}
+.filterActive {
+  background: #00115D;
+  border-color: #00115D;
+  color: #fff;
+}
+
+.filterDot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  margin-left: .1rem;
+  flex-shrink: 0;
+}
+
+.filterDropdown {
+  position: absolute;
+  top: calc(100% + .5rem);
+  left: 0;
+  min-width: 175px;
+  background: #fff;
+  border: 1px solid var(--p10);
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(20,33,61,.12), 0 2px 8px rgba(20,33,61,.06);
+  overflow: hidden;
+  z-index: 50;
+  padding: .375rem;
+}
+
+.filterOption {
+  display: flex; align-items: center; gap: .55rem;
+  width: 100%; padding: .5rem .75rem;
+  border: none; background: none; cursor: pointer;
+  border-radius: 8px;
+  text-align: left;
+  transition: background .15s;
+}
+.filterOption:hover { background: var(--bg); }
+.filterOptionActive { background: var(--bg); }
+
+.filterOptionDot {
+  width: 7px; height: 7px; min-width: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.filterOptionLabel {
+  flex: 1;
+  font-family: var(--fb); font-size: .875rem;
+  color: var(--p); font-weight: 500;
+}
+
+.filterCheck {
+  color: var(--p50);
+  flex-shrink: 0;
+}
+
+/* ── ADD BUTTON ────────────────────────────────────────────── */
+.addBtn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  height: 42px; padding: 0 1.25rem;
+  border: 1.5px solid #00115D;
+  border-radius: 99px; cursor: pointer;
+  font-family: var(--fd); font-weight: 700;
+  font-size: .875rem; letter-spacing: .2px; color: #fff;
+  background: #00115D;
+  white-space: nowrap;
+  transition: background .2s, border-color .2s;
+  flex-shrink: 0;
+}
+.addBtn:hover {
+  background: var(--a);
+  border-color: var(--a);
+}
+
+/* ── LIST AREA ─────────────────────────────────────────────── */
+.listWrap {
+  flex: 1;
+  padding: 1.5rem 6% 4rem;
+}
+
+.list {
+  display: flex; flex-direction: column; gap: .625rem;
+}
+
+/* ── PATIENT CARDS ─────────────────────────────────────────── */
+.card {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.375rem 1rem 2.5rem;
+  background: #fff;
+  border: 1px solid var(--p10);
+  border-radius: var(--r-xl);
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 1px 4px rgba(20,33,61,.06);
+}
+.card:hover { box-shadow: 0 4px 20px rgba(20,33,61,.1); }
+
+.cardAccent {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--rc);
+  opacity: .7;
+  transition: opacity .2s;
+}
+.card:hover .cardAccent { opacity: 1; }
+
+.cardLeft {
+  display: flex; align-items: center; gap: 1.125rem;
+}
+
+.avatar {
+  width: 44px; height: 44px; min-width: 44px;
+  border-radius: 50%;
+  background: var(--p10);
+  border: 1.5px solid var(--p20);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fd); font-weight: 800;
+  font-size: .8125rem; color: var(--p);
+  letter-spacing: .5px;
+}
+
+.patientInfo { display: flex; flex-direction: column; gap: .2rem; }
+
+.name {
+  font-family: var(--fd); font-weight: 800;
+  font-size: 1rem; letter-spacing: .3px; color: var(--p);
+}
+
+.meta {
+  font-family: var(--fb); font-size: .8125rem;
+  color: var(--p50); display: flex; align-items: center; gap: .35rem;
+}
+.dot { opacity: .4; }
+
+.cardRight {
+  display: flex; align-items: center; gap: 1rem;
+  flex-shrink: 0;
+}
+
+.riskBadge {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .28rem 1rem;
+  background: color-mix(in srgb, var(--rc) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rc) 18%, transparent);
+  border-radius: 99px;
+  flex-shrink: 0;
+}
+
+.riskDot {
+  width: 6px; height: 6px; min-width: 6px;
+  border-radius: 50%;
+  background: var(--rc);
+}
+
+.riskLabel {
+  font-family: var(--fm); font-size: .8rem;
+  font-weight: 500; color: var(--rc); opacity: .8;
+}
+
+.arrow {
+  color: var(--p20);
+  transition: color .2s, transform .2s;
+}
+.card:hover .arrow {
+  color: var(--p50);
+  transform: translateX(2px);
+}
+
+/* ── EMPTY STATE ───────────────────────────────────────────── */
+.empty {
+  padding: 5rem 0; text-align: center;
+  display: flex; flex-direction: column; gap: .5rem;
+}
+.emptyTitle {
+  font-family: var(--fd); font-weight: 700;
+  font-size: 1.5rem; color: var(--p);
+}
+.emptySub {
+  font-family: var(--fb); font-size: 1rem; color: var(--p50);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero        { padding: 76px 5% 1rem; }
+  .heroContent { flex-direction: column; align-items: flex-start; gap: .5rem; }
+  .toolbar     { padding: .875rem 5%; }
+  .listWrap    { padding: 1.25rem 5% 4rem; }
+  .statRow     { gap: 0; }
+  .statItem    { padding: 0 .75rem; }
+  .title       { font-size: clamp(1.25rem, 5vw, 1.625rem); }
+  .card        { padding-left: 2rem; }
+}

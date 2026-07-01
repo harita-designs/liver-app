@@ -1,0 +1,9 @@
+.btn {
+  position: absolute; top: 1.5rem; left: 1.5rem;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--surf); border: 1px solid var(--p20);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--p);
+  box-shadow: var(--sh); transition: background .2s, transform .15s, box-shadow .2s;
+}
+.btn:hover { background: var(--p); color: var(--bg); transform: translateX(-2px); box-shadow: var(--sh-md); }

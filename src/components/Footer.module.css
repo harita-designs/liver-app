@@ -1,0 +1,31 @@
+.footer {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 2rem; padding: 4rem 3rem 3rem;
+  margin-top: 4rem; border-top: 1px solid var(--p10);
+}
+.brandName {
+  font-family: var(--fd); font-weight: 600;
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  line-height: 1.15; letter-spacing: 2px;
+  text-transform: capitalize; color: var(--p);
+}
+.email {
+  font-family: var(--fb); font-weight: 700;
+  font-size: 1rem; color: var(--p50); margin-top: .75rem;
+  letter-spacing: -.3px;
+}
+.links { display: flex; flex-direction: column; }
+.link {
+  font-family: var(--fd); font-weight: 700;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  letter-spacing: -1px;
+  color: var(--p); padding: .6rem 0;
+  border-bottom: 1px solid rgba(20,33,61,.07);
+  transition: color .2s, padding-left .2s;
+}
+.link:first-child { border-top: 1px solid rgba(20,33,61,.07); }
+.link:hover { color: var(--a); padding-left: .75rem; }
+
+@media (max-width: 640px) {
+  .footer { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+}

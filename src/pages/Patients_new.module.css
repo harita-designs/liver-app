@@ -1,0 +1,271 @@
+/* ── PAGE ──────────────────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+}
+
+/* ── DARK HERO HEADER ──────────────────────────────────────── */
+.hero {
+  position: relative;
+  padding: 76px 6% 0;
+  height: 250px;
+  overflow: hidden;
+}
+
+.heroBg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 55% 60% at 90% 10%, rgba(0,47,255,.18) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 50% at 5% 90%,  rgba(0,17,93,.6)   0%, transparent 60%),
+    linear-gradient(160deg, #0c1420 0%, #14213d 55%, #0d1829 100%);
+}
+
+.heroContent {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; gap: .875rem;
+  padding-bottom: 1rem;
+}
+
+/* ── EYEBROW & TITLE ───────────────────────────────────────── */
+.eyebrow {
+  font-family: var(--fm); font-size: .7rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.4); margin-bottom: .25rem;
+}
+
+.title {
+  font-family: var(--fd); font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: .95; letter-spacing: -2px; color: #fff;
+}
+
+.ac { color: #00d4e8; }
+
+/* ── STATS CHIPS ───────────────────────────────────────────── */
+.statsRow {
+  display: flex; gap: .75rem; flex-wrap: wrap;
+}
+
+.statChip {
+  display: flex; align-items: baseline; gap: .5rem;
+  padding: .5rem 1rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 99px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.statNum {
+  font-family: var(--fd); font-weight: 800;
+  font-size: 1.125rem; line-height: 1; letter-spacing: -.5px;
+  color: #fff;
+}
+
+.statLabel {
+  font-family: var(--fm); font-size: .65rem; font-weight: 600;
+  letter-spacing: .3px; color: rgba(255,255,255,.4);
+}
+
+.statHigh { border-color: rgba(229,62,62,.25); }
+.statHigh .statNum { color: #e53e3e; }
+
+.statMod  { border-color: rgba(221,107,32,.25); }
+.statMod  .statNum { color: #dd6b20; }
+
+.statLow  { border-color: rgba(47,133,90,.25); }
+.statLow  .statNum { color: #38a169; }
+
+/* ── TOOLBAR ───────────────────────────────────────────────── */
+.toolbar {
+  position: relative; z-index: 1;
+  display: flex; gap: 1rem; align-items: center;
+  background: rgba(255,255,255,.04);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 1rem 6%;
+  margin: 0 -6%;
+}
+
+.searchWrap {
+  flex: 1; position: relative; display: flex; align-items: center;
+}
+
+.searchIcon {
+  position: absolute; left: 1.1rem;
+  color: rgba(255,255,255,.35); pointer-events: none;
+}
+
+.searchInput {
+  width: 100%; padding: .75rem 3rem .75rem 3rem;
+  background: rgba(255,255,255,.07);
+  border: 1.5px solid rgba(255,255,255,.12);
+  border-radius: var(--r-xl);
+  font-family: var(--fb); font-size: .9375rem;
+  color: #fff; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.searchInput::placeholder { color: rgba(255,255,255,.3); }
+.searchInput:focus {
+  border-color: rgba(0,212,232,.5);
+  box-shadow: 0 0 0 3px rgba(0,212,232,.1);
+}
+
+.clearBtn {
+  position: absolute; right: 1rem;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.4);
+  font-size: 1.25rem; line-height: 1;
+  transition: color .2s;
+}
+.clearBtn:hover { color: #fff; }
+
+/* ── ADD BUTTON — plain glass, not AI glow ─────────────────── */
+.addBtn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .75rem 1.375rem;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 99px; cursor: pointer;
+  font-family: var(--fd); font-weight: 700;
+  font-size: .875rem; letter-spacing: .2px; color: #fff;
+  background: rgba(255,255,255,.1);
+  backdrop-filter: blur(10px);
+  white-space: nowrap;
+  transition: background .2s, border-color .2s;
+  flex-shrink: 0;
+}
+.addBtn:hover {
+  background: rgba(255,255,255,.16);
+  border-color: rgba(255,255,255,.3);
+}
+
+/* ── LIST AREA ─────────────────────────────────────────────── */
+.listWrap {
+  flex: 1;
+  padding: 2.5rem 6% 4rem;
+}
+
+.listMeta {
+  display: flex; align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.resultCount {
+  font-family: var(--fm); font-size: .8rem; font-weight: 600;
+  letter-spacing: .3px; color: var(--p50);
+}
+
+.queryTag { color: var(--a); }
+
+/* ── PATIENT CARDS ─────────────────────────────────────────── */
+.list {
+  display: flex; flex-direction: column; gap: .625rem;
+}
+
+.card {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.125rem 1.375rem 1.125rem 1.75rem;
+  background: #fff;
+  border: 1px solid var(--p10);
+  border-radius: var(--r-xl);
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow .2s, transform .2s;
+  box-shadow: 0 1px 4px rgba(20,33,61,.06);
+}
+.card:hover { box-shadow: 0 4px 20px rgba(20,33,61,.1); }
+
+.cardAccent {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--rc);
+  border-radius: 3px 0 0 3px;
+  opacity: .7;
+  transition: opacity .2s;
+}
+.card:hover .cardAccent { opacity: 1; }
+
+.cardLeft {
+  display: flex; align-items: center; gap: 1.125rem;
+}
+
+.avatar {
+  width: 46px; height: 46px; min-width: 46px;
+  border-radius: 50%;
+  background: var(--p10);
+  border: 1.5px solid var(--p20);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fd); font-weight: 800;
+  font-size: .875rem; color: var(--p);
+  letter-spacing: .5px;
+}
+
+.patientInfo { display: flex; flex-direction: column; gap: .2rem; }
+
+.name {
+  font-family: var(--fd); font-weight: 700;
+  font-size: 1rem; letter-spacing: -.2px; color: var(--p);
+}
+
+.meta {
+  font-family: var(--fb); font-size: .8125rem;
+  color: var(--p50); display: flex; align-items: center; gap: .35rem;
+}
+.dot { opacity: .4; }
+
+.cardRight {
+  display: flex; align-items: center; gap: 1rem;
+  flex-shrink: 0;
+}
+
+.riskBadge {
+  display: flex; flex-direction: column; align-items: flex-end; gap: .1rem;
+  padding: .4rem .875rem;
+  background: color-mix(in srgb, var(--rc) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--rc) 22%, transparent);
+  border-radius: var(--r-md);
+}
+
+.riskScore {
+  font-family: var(--fd); font-weight: 900;
+  font-size: 1.125rem; line-height: 1;
+  color: var(--rc); letter-spacing: .3px;
+}
+
+.riskLabel {
+  font-family: var(--fm); font-size: .6rem;
+  font-weight: 700; letter-spacing: .8px;
+  text-transform: uppercase; color: var(--rc); opacity: .8;
+}
+
+.arrow {
+  color: var(--p20);
+  transition: color .2s, transform .2s;
+}
+.card:hover .arrow {
+  color: var(--p50);
+  transform: translateX(2px);
+}
+
+/* ── EMPTY STATE ───────────────────────────────────────────── */
+.empty {
+  padding: 5rem 0; text-align: center;
+  display: flex; flex-direction: column; gap: .5rem;
+}
+.emptyTitle {
+  font-family: var(--fd); font-weight: 700;
+  font-size: 1.5rem; color: var(--p);
+}
+.emptySub {
+  font-family: var(--fb); font-size: 1rem; color: var(--p50);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero     { padding: 76px 5% 0; height: auto; min-height: 250px; }
+  .toolbar  { margin: 0 -5%; padding-left: 5%; padding-right: 5%; }
+  .listWrap { padding: 2rem 5% 4rem; }
+  .statsRow { gap: .5rem; }
+  .title    { font-size: clamp(1.75rem, 6vw, 2.5rem); }
+}
